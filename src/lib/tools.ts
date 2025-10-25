@@ -18,10 +18,10 @@ import {
   type LucideIcon,
   Crown,
   FileCode,
-  MessageCircle,
-  QrCode,
   FileJson,
   Palette,
+  MessageCircle,
+  QrCode,
 } from "lucide-react";
 
 export type Tool = {
@@ -38,6 +38,12 @@ export const tools: Tool[] = [
     description: "Overview of all tools.",
     icon: LayoutGrid,
     href: "/",
+  },
+  {
+    name: "AI Chat",
+    description: "Chat with an advanced AI.",
+    icon: MessageCircle,
+    href: "/ai-chat",
   },
   {
     name: "Code Converter",
