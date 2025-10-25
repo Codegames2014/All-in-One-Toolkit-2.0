@@ -20,12 +20,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { games } from "@/lib/games";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const filteredTools = tools.filter(
+  const allItems = tools;
+
+  const filteredTools = allItems.filter(
     (tool) =>
       tool.href !== "/" && (
       tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -33,7 +36,7 @@ export default function Home() {
       )
   );
   
-  const allTools = tools.filter(tool => tool.href !== "/");
+  const allToolsForDisplay = allItems.filter(tool => tool.href !== "/");
 
   return (
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -46,16 +49,16 @@ export default function Home() {
           <DialogTrigger asChild>
             <Button variant="outline" className="w-full max-w-lg">
               <Search className="mr-2 h-4 w-4" />
-              Search for a tool...
+              Search for a tool or game...
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Search for a tool</DialogTitle>
+              <DialogTitle>Search for a tool or game</DialogTitle>
             </DialogHeader>
             <Input
               type="text"
-              placeholder="e.g., Calculator, Games, etc."
+              placeholder="e.g., Calculator, Ludo, etc."
               className="w-full"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -77,14 +80,14 @@ export default function Home() {
                 );
               })}
               {searchTerm && filteredTools.length === 0 && (
-                <p className="text-center text-muted-foreground py-4">No tools found.</p>
+                <p className="text-center text-muted-foreground py-4">No tools or games found.</p>
               )}
             </div>
           </DialogContent>
         </Dialog>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {allTools.map((tool, index) => {
+        {allToolsForDisplay.map((tool, index) => {
           const Icon = tool.icon;
           return (
             <Link

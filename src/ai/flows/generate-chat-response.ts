@@ -41,7 +41,6 @@ const generateChatResponseFlow = ai.defineFlow(
     const chatHistory = history.map(msg => ({ role: msg.role, content: [{ text: msg.content }] }));
 
     const { output } = await ai.generate({
-      model: 'googleai/gemini-2.5-flash',
       prompt: [
         ...chatHistory,
         { role: 'user', content: [{ text: prompt }] }
