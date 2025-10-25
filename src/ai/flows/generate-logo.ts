@@ -46,7 +46,7 @@ const generateLogoFlow = ai.defineFlow(
     The logo should be on a plain white background, simple, modern, and easily recognizable. Avoid overly complex details. The text should be clearly legible.`;
 
     const { media } = await ai.generate({
-      model: "googleai/imagen-4.0-fast-generate-001",
+      model: "googleai/imagen-2",
       prompt: fullPrompt,
     });
 

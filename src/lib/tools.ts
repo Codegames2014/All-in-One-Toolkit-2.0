@@ -57,18 +57,6 @@ const individualTools: Tool[] = [
     href: "/ai-chat",
   },
   {
-    name: "Code Converter",
-    description: "Translate code between languages.",
-    icon: FileCode,
-    href: "/code-converter",
-  },
-  {
-    name: "File Converter",
-    description: "Convert between file formats.",
-    icon: FileJson,
-    href: "/file-converter",
-  },
-  {
     name: "Money Converter",
     description: "Convert between currencies.",
     icon: CircleDollarSign,
@@ -79,12 +67,6 @@ const individualTools: Tool[] = [
     description: "Scan QR codes with your camera.",
     icon: QrCode,
     href: "/qr-code-scanner",
-  },
-  {
-    name: "Color Picker",
-    description: "Explore and select colors.",
-    icon: Palette,
-    href: "/color-picker",
   },
   {
     name: "Basic Calculator",
