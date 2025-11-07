@@ -20,7 +20,6 @@ import {
   FileCode,
   FileJson,
   Palette,
-  MessageCircle,
   QrCode,
   Puzzle,
   Car,
@@ -33,6 +32,8 @@ import {
   Grape,
   RectangleHorizontal,
   CircleDot,
+  Clock,
+  Scale,
 } from "lucide-react";
 
 export type Tool = {
@@ -61,6 +62,18 @@ const individualTools: Tool[] = [
     description: "Scan QR codes with your camera.",
     icon: QrCode,
     href: "/qr-code-scanner",
+  },
+  {
+    name: "Unit Converter",
+    description: "Convert various units of measurement.",
+    icon: Scale,
+    href: "/unit-converter",
+  },
+  {
+    name: "Time Zone Checker",
+    description: "Compare times across the world.",
+    icon: Clock,
+    href: "/time-zone-checker",
   },
   {
     name: "Basic Calculator",
