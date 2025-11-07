@@ -18,7 +18,6 @@ import {
   type LucideIcon,
   Crown,
   FileCode,
-  FileJson,
   Palette,
   QrCode,
   Puzzle,
@@ -64,7 +63,7 @@ const individualTools: Tool[] = [
     href: "/qr-code-scanner",
   },
   {
-    name: "Unit Converter",
+    name: "Measurement Unit Converter",
     description: "Convert various units of measurement.",
     icon: Scale,
     href: "/unit-converter",
