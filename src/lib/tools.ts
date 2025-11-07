@@ -33,6 +33,7 @@ import {
   CircleDot,
   Clock,
   Scale,
+  BookOpen,
 } from "lucide-react";
 
 export type Tool = {
@@ -115,6 +116,12 @@ const individualTools: Tool[] = [
     description: "Generate creative text.",
     icon: Feather,
     href: "/text-generator",
+  },
+  {
+    name: "Story Writer",
+    description: "Write stories with AI.",
+    icon: BookOpen,
+    href: "/story-writer",
   },
   {
     name: "Math Solver",
