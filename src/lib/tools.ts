@@ -51,12 +51,6 @@ const individualTools: Tool[] = [
     href: "/",
   },
   {
-    name: "AI Chat",
-    description: "Chat with an advanced AI.",
-    icon: MessageCircle,
-    href: "/ai-chat",
-  },
-  {
     name: "Money Converter",
     description: "Convert between currencies.",
     icon: CircleDollarSign,
