@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AppShell } from "@/components/app-shell";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,9 +26,14 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <AppShell>{children}</AppShell>
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AppShell>{children}</AppShell>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
-  );
-}
