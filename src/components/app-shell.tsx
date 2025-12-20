@@ -24,7 +24,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
   const getTitle = (path: string) => {
-    if (path === '/') return 'Dashboard';
+    if (path === '/') return 'Home';
     const tool = tools.find(t => t.href === path);
     return tool ? tool.name : path.substring(1).split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   }
@@ -49,7 +49,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <SidebarContent>
             <SidebarMenu>
               {tools.map((tool) => {
-                if(tool.name === 'Dashboard') return null; // Already in header
+                if(tool.name === 'Dashboard' || tool.name === 'Home') return null;
                 const Icon = tool.icon;
                 return (
                   <SidebarMenuItem key={tool.name}>
@@ -80,12 +80,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </SidebarFooter>
         </Sidebar>
         <SidebarInset>
-          <div className="flex items-center gap-2 p-2 border-b">
-            <SidebarTrigger />
-            <h2 className="text-lg font-semibold font-headline text-muted-foreground capitalize">
-              {getTitle(pathname)}
-            </h2>
-          </div>
+          {pathname !== '/' && (
+            <div className="flex items-center gap-2 p-2 border-b">
+              <SidebarTrigger />
+              <h2 className="text-lg font-semibold font-headline text-muted-foreground capitalize">
+                {getTitle(pathname)}
+              </h2>
+            </div>
+          )}
           <main className="flex-1 p-4 md:p-6">{children}</main>
         </SidebarInset>
       </SidebarProvider>

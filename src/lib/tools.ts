@@ -46,7 +46,7 @@ export type Tool = {
 
 const individualTools: Tool[] = [
   {
-    name: "Dashboard",
+    name: "Home",
     description: "Overview of all tools.",
     icon: LayoutGrid,
     href: "/",

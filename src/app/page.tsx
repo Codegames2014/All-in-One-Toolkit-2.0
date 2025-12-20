@@ -12,7 +12,7 @@ import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search, SidebarTrigger } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -43,10 +43,16 @@ export default function Home() {
 
   return (
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <PageHeader
-        title="All-in-One Toolkit"
-        description="Your one-stop destination for a variety of useful tools."
-      />
+      <div className="flex items-center gap-2 mb-8">
+        <div className="md:hidden">
+          <SidebarTrigger />
+        </div>
+        <PageHeader
+          title="All-in-One Toolkit"
+          description="Your one-stop destination for a variety of useful tools."
+        />
+      </div>
+
       <div className="mt-8 mb-8 flex justify-center">
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
