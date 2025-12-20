@@ -18,7 +18,6 @@ import { tools } from "@/lib/tools";
 import { Button } from "./ui/button";
 import { Bot } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
-import { PageLoader } from "./page-loader";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -32,7 +31,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-background/10 backdrop-blur-lg">
       <SidebarProvider>
-        <PageLoader />
         <Sidebar>
           <SidebarHeader>
             <div className="flex items-center gap-2">
@@ -49,7 +47,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <SidebarContent>
             <SidebarMenu>
               {tools.map((tool) => {
-                if(tool.name === 'Dashboard' || tool.name === 'Home') return null;
+                if(tool.name === 'Home') return null;
                 const Icon = tool.icon;
                 return (
                   <SidebarMenuItem key={tool.name}>
@@ -80,14 +78,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </SidebarFooter>
         </Sidebar>
         <SidebarInset>
-          {pathname !== '/' && (
-            <div className="flex items-center gap-2 p-2 border-b">
+            <div className="flex items-center gap-2 p-2 border-b md:hidden">
               <SidebarTrigger />
               <h2 className="text-lg font-semibold font-headline text-muted-foreground capitalize">
                 {getTitle(pathname)}
               </h2>
             </div>
-          )}
           <main className="flex-1 p-4 md:p-6">{children}</main>
         </SidebarInset>
       </SidebarProvider>

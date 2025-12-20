@@ -12,7 +12,7 @@ import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, SidebarTrigger } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -20,13 +20,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { games } from "@/lib/games";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const allItems = [...tools, ...games].filter(
+  const allItems = tools.filter(
     (item, index, self) =>
       index === self.findIndex((t) => t.name === item.name)
   );
@@ -43,15 +42,10 @@ export default function Home() {
 
   return (
     <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <div className="flex items-center gap-2 mb-8">
-        <div className="md:hidden">
-          <SidebarTrigger />
-        </div>
-        <PageHeader
-          title="All-in-One Toolkit"
-          description="Your one-stop destination for a variety of useful tools."
-        />
-      </div>
+      <PageHeader
+        title="All-in-One Toolkit"
+        description="Your one-stop destination for a variety of useful tools."
+      />
 
       <div className="mt-8 mb-8 flex justify-center">
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
