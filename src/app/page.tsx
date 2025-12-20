@@ -26,7 +26,10 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const allItems = tools;
+  const allItems = [...tools, ...games].filter(
+    (item, index, self) =>
+      index === self.findIndex((t) => t.name === item.name)
+  );
 
   const filteredTools = allItems.filter(
     (tool) =>
