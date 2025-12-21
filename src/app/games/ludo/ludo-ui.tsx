@@ -380,7 +380,10 @@ export function LudoUI() {
             
             if (currentPos < 100 && currentPos <= homeEntrance && newPos > homeEntrance && (!pathCrossesBoundary || (pathCrossesBoundary && currentPos > newPos))) {
                 token.position = 100 + (newPos - homeEntrance);
-            } else {
+            } else if (currentPos > 100) {
+                 token.position = newPos;
+            }
+            else {
                 token.position = newPos;
             }
             
@@ -438,7 +441,7 @@ export function LudoUI() {
           <Card className="bg-white/80 dark:bg-gray-800/80">
             <CardContent className="p-4">
               <h3 className="text-xl font-bold mb-2">Game Status</h3>
-              <p className={cn("text-lg font-semibold capitalize", colorClasses[activePlayer].text)}>{status}</p>
+              <p className={cn("text-lg font-semibold capitalize", activePlayer && colorClasses[activePlayer].text)}>{status}</p>
             </CardContent>
           </Card>
 
@@ -446,7 +449,7 @@ export function LudoUI() {
             <CardContent className="p-4 flex flex-col items-center gap-4">
               <h3 className="text-xl font-bold">Dice</h3>
               <Dice onRoll={rollDice} value={diceValue} rolling={isRolling} color={activePlayer} />
-              <p className="text-sm text-muted-foreground">Current Turn: <span className={cn("font-bold capitalize text-lg", colorClasses[activePlayer].text)}>{activePlayer}</span></p>
+              <p className="text-sm text-muted-foreground">Current Turn: <span className={cn("font-bold capitalize text-lg", activePlayer && colorClasses[activePlayer].text)}>{activePlayer}</span></p>
             </CardContent>
           </Card>
 
@@ -467,7 +470,7 @@ export function LudoUI() {
                         Game Over!
                     </DialogTitle>
                     <DialogDescription className="text-xl text-center py-4 capitalize">
-                        <span className={cn("font-bold", colorClasses[winner!].text)}>{winner}</span> wins the game!
+                        <span className={cn("font-bold", winner && colorClasses[winner!].text)}>{winner}</span> wins the game!
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>

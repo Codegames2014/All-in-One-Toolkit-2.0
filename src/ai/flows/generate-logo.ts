@@ -12,9 +12,7 @@ import { ai } from "@/ai/genkit";
 import { z } from "genkit";
 
 const GenerateLogoInputSchema = z.object({
-  text: z.string().describe("The text to be included in the logo."),
-  style: z.string().describe("The desired style of the logo (e.g., Minimalist, Vintage, Modern)."),
-  color: z.string().describe("The preferred color scheme for the logo (e.g., Vibrant, Pastel, Monochrome)."),
+  prompt: z.string().describe("The text prompt describing the desired logo."),
 });
 export type GenerateLogoInput = z.infer<typeof GenerateLogoInputSchema>;
 
@@ -39,14 +37,12 @@ const generateLogoFlow = ai.defineFlow(
     inputSchema: GenerateLogoInputSchema,
     outputSchema: GenerateLogoOutputSchema,
   },
-  async ({ text, style, color }) => {
-    const fullPrompt = `A professional, clean, vector-style logo for "${text}".
-    Style: ${style}.
-    Color Palette: ${color}.
-    The logo should be on a plain white background, simple, modern, and easily recognizable. Avoid overly complex details. The text should be clearly legible.`;
+  async ({ prompt }) => {
+    const fullPrompt = `A professional, clean, vector-style logo for: "${prompt}".
+    The logo should be on a plain white background, simple, modern, and easily recognizable. Avoid overly complex details. If text is included, it should be clearly legible.`;
 
     const { media } = await ai.generate({
-      model: "googleai/imagen-2",
+      model: "googleai/imagen-4.0-fast-generate-001",
       prompt: fullPrompt,
     });
 
