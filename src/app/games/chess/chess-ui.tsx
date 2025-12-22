@@ -227,7 +227,17 @@ export function ChessUI() {
     if (gameMode === 'online' && game.turn() !== onlinePlayerColor) return;
 
     if (selectedSquare) {
-       const move = { from: selectedSquare, to: square, promotion: 'q' as PieceSymbol | undefined };
+       const piece = game.get(selectedSquare);
+       const isPromotion = (piece?.type === 'p' &&
+         ((piece.color === 'w' && selectedSquare[1] === '7' && square[1] === '8') ||
+          (piece.color === 'b' && selectedSquare[1] === '2' && square[1] === '1')));
+
+       const move = {
+         from: selectedSquare,
+         to: square,
+         promotion: isPromotion ? 'q' : undefined,
+       };
+
        const newGame = new Chess(game.fen());
        const result = newGame.move(move);
 
