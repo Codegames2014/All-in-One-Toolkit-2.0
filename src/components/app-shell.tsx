@@ -73,7 +73,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <ThemeToggle />
             </div>
             <p className="text-xs text-muted-foreground p-2 text-center">
-              &copy; 2024 All-in-One Toolkit
+              &copy; 2026 All-in-One Toolkit
             </p>
           </SidebarFooter>
         </Sidebar>
