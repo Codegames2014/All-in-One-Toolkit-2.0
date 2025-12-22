@@ -17,7 +17,6 @@ import {
   type LucideIcon,
   Crown,
   FileCode,
-  MessageCircle,
   QrCode,
   Palette,
   Clock,
@@ -41,18 +40,12 @@ export const tools: Tool[] = [
     href: "/",
   },
   {
-    name: "AI Chat",
-    description: "Have a conversation with an AI.",
-    icon: MessageCircle,
-    href: "/ai-chat",
-  },
-  {
     name: "Money Converter",
     description: "Convert between currencies.",
     icon: CircleDollarSign,
     href: "/money-converter",
   },
-  {
+   {
     name: "QR Code Scanner",
     description: "Scan QR codes with your camera.",
     icon: QrCode,
@@ -65,7 +58,7 @@ export const tools: Tool[] = [
     href: "/color-picker",
   },
   {
-    name: "Measurement Unit Converter",
+    name: "Unit Converter",
     description: "Convert various units of measurement.",
     icon: Scale,
     href: "/unit-converter",
