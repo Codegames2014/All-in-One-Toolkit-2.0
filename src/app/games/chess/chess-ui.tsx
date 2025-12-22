@@ -227,30 +227,23 @@ export function ChessUI() {
     if (gameMode === 'online' && game.turn() !== onlinePlayerColor) return;
 
     if (selectedSquare) {
-       const piece = game.get(selectedSquare);
-       const isPromotion = (piece?.type === 'p' &&
-         ((piece.color === 'w' && selectedSquare[1] === '7' && square[1] === '8') ||
-          (piece.color === 'b' && selectedSquare[1] === '2' && square[1] === '1')));
+      const move = possibleMoves.find(m => m.from === selectedSquare && m.to === square);
 
-       const move = {
-         from: selectedSquare,
-         to: square,
-         promotion: isPromotion ? 'q' : undefined,
-       };
+      if (move) {
+        const newGame = new Chess(game.fen());
+        const result = newGame.move(move);
 
-       const newGame = new Chess(game.fen());
-       const result = newGame.move(move);
-
-       if (result) {
-         updateGame(newGame, result);
-         if (gameMode === 'online' && onlineGameId) {
-           const gameRef = ref(db, `games/${onlineGameId}`);
-           set(gameRef, { fen: newGame.fen() });
-         }
-       }
-       
-       setSelectedSquare(null);
-       setPossibleMoves([]);
+        if (result) {
+          updateGame(newGame, result);
+          if (gameMode === 'online' && onlineGameId) {
+            const gameRef = ref(db, `games/${onlineGameId}`);
+            set(gameRef, { fen: newGame.fen() });
+          }
+        }
+      }
+      
+      setSelectedSquare(null);
+      setPossibleMoves([]);
     } else {
       const piece = game.get(square);
       if (piece && piece.color === game.turn()) {
