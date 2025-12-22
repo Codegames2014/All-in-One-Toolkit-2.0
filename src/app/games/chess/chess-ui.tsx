@@ -240,10 +240,20 @@ export function ChessUI() {
             set(gameRef, { fen: newGame.fen() });
           }
         }
+        setSelectedSquare(null);
+        setPossibleMoves([]);
+      } else {
+        // If the user clicks on another one of their own pieces, select that piece instead.
+        const piece = game.get(square);
+        if (piece && piece.color === game.turn()) {
+            setSelectedSquare(square);
+            setPossibleMoves(game.moves({ square, verbose: true }));
+        } else {
+            // Otherwise, deselect the current piece.
+            setSelectedSquare(null);
+            setPossibleMoves([]);
+        }
       }
-      
-      setSelectedSquare(null);
-      setPossibleMoves([]);
     } else {
       const piece = game.get(square);
       if (piece && piece.color === game.turn()) {
