@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,11 +54,12 @@ export function UnitConverterUI() {
     return Object.keys(conversionFactors[unitType]);
   }, [unitType]);
 
-  // Reset units when type changes
-  useState(() => {
-    setFromUnit(unitsForType[0]);
-    setToUnit(unitsForType[1] || unitsForType[0]);
-  });
+  useEffect(() => {
+    const newUnits = Object.keys(conversionFactors[unitType]);
+    setFromUnit(newUnits[0]);
+    setToUnit(newUnits[1] || newUnits[0]);
+    setInputValue("1");
+  }, [unitType]);
 
   const outputValue = useMemo(() => {
     const fromVal = parseFloat(inputValue);
@@ -79,8 +80,10 @@ export function UnitConverterUI() {
   }, [inputValue, fromUnit, toUnit, unitType]);
   
   const swapUnits = () => {
-      setFromUnit(toUnit);
-      setToUnit(fromUnit);
+      const currentFrom = fromUnit;
+      const currentTo = toUnit;
+      setFromUnit(currentTo);
+      setToUnit(currentFrom);
       setInputValue(outputValue);
   }
 
