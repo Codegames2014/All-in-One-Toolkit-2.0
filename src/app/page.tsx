@@ -42,7 +42,6 @@ export default function Home() {
 
   return (
     <div>
-      <div className="absolute inset-0 bg-blue-100 dark:bg-blue-900/20 -z-10" />
       <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <PageHeader
           title="All-in-One Toolkit"
