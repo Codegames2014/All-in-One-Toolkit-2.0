@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -38,7 +39,7 @@ export default function Home() {
       )
   );
   
-  const allToolsForDisplay = allItems.filter(tool => tool.href !== "/");
+  const allToolsForDisplay = allItems.filter(tool => tool.href !== "/" && tool.name !== 'Dashboard');
 
   return (
     <div>

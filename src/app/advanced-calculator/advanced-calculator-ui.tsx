@@ -8,27 +8,44 @@ import { Input } from "@/components/ui/input";
 
 // A simple expression parser. Not a full-fledged one, but safer than eval.
 const evaluateExpression = (expr: string): number => {
-  // Add spaces around operators
-  expr = expr.replace(/([\+\-\*\/\^\(\)])/g, ' $1 ');
+  // Add spaces around operators to help with tokenization
+  expr = expr.replace(/([+\-*/^()√])/g, ' $1 ');
 
-  const tokens = expr.trim().split(/\s+/);
+  const tokens = expr.trim().split(/\s+/).map(token => {
+    if (token === 'π') return String(Math.PI);
+    if (token === 'e') return String(Math.E);
+    return token;
+  });
+
   const values: number[] = [];
   const ops: string[] = [];
 
-  const precedence: { [key: string]: number } = { '+': 1, '-': 1, '*': 2, '/': 2, '^': 3 };
+  const precedence: { [key: string]: number } = { '+': 1, '-': 1, '*': 2, '/': 2, '^': 3, '√': 4, 'sin': 4, 'cos': 4, 'tan': 4, 'log': 4, 'ln': 4 };
   const applyOp = () => {
     const op = ops.pop()!;
-    const b = values.pop()!;
-    const a = values.pop()!;
-    switch (op) {
-      case '+': values.push(a + b); break;
-      case '-': values.push(a - b); break;
-      case '*': values.push(a * b); break;
-      case '/': 
-        if(b === 0) throw new Error("Division by zero");
-        values.push(a / b); 
-        break;
-      case '^': values.push(Math.pow(a, b)); break;
+    if (['sin', 'cos', 'tan', 'log', 'ln', '√'].includes(op)) {
+        const a = values.pop()!;
+        switch(op) {
+            case 'sin': values.push(Math.sin(a)); break;
+            case 'cos': values.push(Math.cos(a)); break;
+            case 'tan': values.push(Math.tan(a)); break;
+            case 'log': values.push(Math.log10(a)); break;
+            case 'ln': values.push(Math.log(a)); break;
+            case '√': values.push(Math.sqrt(a)); break;
+        }
+    } else {
+        const b = values.pop()!;
+        const a = values.pop()!;
+        switch (op) {
+          case '+': values.push(a + b); break;
+          case '-': values.push(a - b); break;
+          case '*': values.push(a * b); break;
+          case '/': 
+            if(b === 0) throw new Error("Division by zero");
+            values.push(a / b); 
+            break;
+          case '^': values.push(Math.pow(a, b)); break;
+        }
     }
   };
 
@@ -43,7 +60,14 @@ const evaluateExpression = (expr: string): number => {
         applyOp();
       }
       ops.pop(); // Pop '('
-    } else if (['+', '-', '*', '/', '^'].includes(token)) {
+    } else if (precedence[token]) {
+      // Handle unary minus or function context
+      const lastToken = i > 0 ? tokens[i-1] : null;
+      if (['sin', 'cos', 'tan', 'log', 'ln', '√'].includes(token) && (lastToken === null || precedence[lastToken] || lastToken === '(') ) {
+          ops.push(token);
+          continue;
+      }
+      
       while (ops.length && precedence[ops[ops.length - 1]] >= precedence[token]) {
         applyOp();
       }
@@ -68,7 +92,7 @@ export function AdvancedCalculatorUI() {
       setDisplay(value);
       return;
     }
-    if (display === "0" && !'()+-*/^'.includes(value)) {
+    if (display === "0" && !'()+-*/^.√'.includes(value)) {
       setExpression(value);
       setDisplay(value);
     } else {
@@ -83,30 +107,13 @@ export function AdvancedCalculatorUI() {
         setDisplay("0");
         return;
     }
-    try {
-        let currentVal = evaluateExpression(expression);
-        let result: number;
-        switch(func) {
-            case 'sin': result = Math.sin(currentVal); break;
-            case 'cos': result = Math.cos(currentVal); break;
-            case 'tan': result = Math.tan(currentVal); break;
-            case 'log': result = Math.log10(currentVal); break;
-            case 'ln': result = Math.log(currentVal); break;
-            case '√': result = Math.sqrt(currentVal); break;
-            default: throw new Error("Unknown function");
-        }
-        const resultString = String(result);
-        setDisplay(resultString);
-        setExpression(resultString);
-    } catch {
-        setDisplay("Error");
-        setExpression("");
-    }
+    handleInput(`${func}(`);
   };
   
   const handleConstant = (c: string) => {
-      const val = c === 'π' ? String(Math.PI) : String(Math.E);
-      if (display === "0" || display === "Error" || ['+', '-', '*', '/','^', '('].includes(expression.slice(-1))) {
+      const val = c;
+      const lastChar = expression.slice(-1);
+      if (display === "0" || display === "Error" || ['+', '-', '*', '/','^', '('].includes(lastChar) || lastChar === '') {
           handleInput(val);
       } else {
           handleInput(`*${val}`);
@@ -132,8 +139,14 @@ export function AdvancedCalculatorUI() {
   };
 
   const handleCalculate = () => {
+    if (expression === "") return;
     try {
-      const result = evaluateExpression(expression);
+      // Balance parentheses
+      const openParen = (expression.match(/\(/g) || []).length;
+      const closeParen = (expression.match(/\)/g) || []).length;
+      let balancedExpression = expression + ')'.repeat(openParen - closeParen);
+
+      const result = evaluateExpression(balancedExpression);
       if(isNaN(result) || !isFinite(result)){
         throw new Error("Invalid calculation");
       }

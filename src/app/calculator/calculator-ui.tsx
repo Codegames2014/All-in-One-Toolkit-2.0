@@ -33,21 +33,6 @@ export function CalculatorUI() {
     }
   };
 
-  const performOperation = (nextOperator: string) => {
-    const inputValue = parseFloat(display);
-
-    if (previousValue === null) {
-      setPreviousValue(String(inputValue));
-    } else if (operator) {
-      const result = calculate(previousValue, inputValue, operator);
-      setPreviousValue(String(result));
-      setDisplay(String(result));
-    }
-
-    setWaitingForOperand(true);
-    setOperator(nextOperator);
-  };
-  
   const calculate = (prev: string, current: number, op: string) => {
     const prevNum = parseFloat(prev);
     switch (op) {
@@ -55,12 +40,36 @@ export function CalculatorUI() {
       case "-": return prevNum - current;
       case "*": return prevNum * current;
       case "/": 
-        if(current === 0) return NaN; // Indicate error
+        if(current === 0) {
+          setDisplay("Error");
+          return NaN;
+        }
         return prevNum / current;
       default: return current;
     }
   }
 
+  const performOperation = (nextOperator: string) => {
+    const inputValue = parseFloat(display);
+
+    if (previousValue === null) {
+      setPreviousValue(String(inputValue));
+    } else if (operator) {
+      const result = calculate(previousValue, inputValue, operator);
+       if (isNaN(result)) {
+        handleClear();
+        setDisplay("Error");
+        return;
+      }
+      const resultString = String(result)
+      setDisplay(resultString);
+      setPreviousValue(resultString);
+    }
+
+    setWaitingForOperand(true);
+    setOperator(nextOperator === '=' ? null : nextOperator);
+  };
+  
   const handleClear = () => {
     setDisplay("0");
     setCurrentValue(null);
@@ -70,13 +79,16 @@ export function CalculatorUI() {
   };
   
   const handleToggleSign = () => {
-    if(display !== "0") {
+    if(display !== "0" && display !== "Error") {
         setDisplay(String(parseFloat(display) * -1));
     }
   }
   
   const handlePercent = () => {
-      setDisplay(String(parseFloat(display) / 100));
+      if(display !== "Error") {
+        setDisplay(String(parseFloat(display) / 100));
+        setWaitingForOperand(true);
+      }
   }
 
 
