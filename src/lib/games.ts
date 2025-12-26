@@ -14,6 +14,7 @@ import {
   Grape,
   RectangleHorizontal,
   CircleDot,
+  Rocket,
 } from "lucide-react";
 
 export type Game = {
@@ -72,6 +73,12 @@ export const games: Game[] = [
     description: "Shoot asteroids and survive.",
     icon: Sigma,
     href: "/games/asteroids",
+  },
+  {
+    name: "Space Shooter",
+    description: "Shoot down the alien invaders.",
+    icon: Rocket,
+    href: "/games/space-shooter",
   },
   {
     name: "Bubble Shooter",
