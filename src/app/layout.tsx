@@ -4,6 +4,8 @@ import { AppShell } from "@/components/app-shell";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import { LoadingScreen } from "@/components/loading-screen";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "All-in-One Toolkit",
@@ -32,7 +34,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AppShell>{children}</AppShell>
+          <Suspense fallback={<LoadingScreen />}>
+            <AppShell>{children}</AppShell>
+          </Suspense>
           <Toaster />
         </ThemeProvider>
       </body>
