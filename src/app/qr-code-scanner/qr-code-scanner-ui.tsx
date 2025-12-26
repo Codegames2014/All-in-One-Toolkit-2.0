@@ -116,7 +116,7 @@ export function QRCodeScannerUI() {
 
   return (
     <div className="w-full h-full">
-      <div className="relative w-full h-full bg-black flex items-center justify-center">
+      <div className="relative w-full h-full bg-black flex items-center justify-center rounded-lg overflow-hidden">
           {hasCameraPermission === null && (
               <div className="flex flex-col items-center gap-2 text-muted-foreground">
                   <Camera className="w-12 h-12" />
