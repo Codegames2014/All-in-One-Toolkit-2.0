@@ -18,6 +18,7 @@ import { tools } from "@/lib/tools";
 import { Button } from "./ui/button";
 import { Bot } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
+import { PageLoader } from "./page-loader";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -47,7 +48,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <SidebarContent>
             <SidebarMenu>
               {tools.map((tool) => {
-                if(tool.name === 'Home') return null;
+                if(tool.name === 'Home' || tool.name === 'Dashboard') return null;
                 const Icon = tool.icon;
                 return (
                   <SidebarMenuItem key={tool.name}>
@@ -78,6 +79,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </SidebarFooter>
         </Sidebar>
         <SidebarInset>
+            <PageLoader />
             <div className="flex items-center gap-2 p-2 border-b md:hidden">
               <SidebarTrigger />
               <h2 className="text-lg font-semibold font-headline text-muted-foreground capitalize">

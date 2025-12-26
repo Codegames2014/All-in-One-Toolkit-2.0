@@ -100,8 +100,10 @@ export default function Home() {
                 key={tool.name}
                 className="group"
               >
-                <Card className="h-full transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 hover:border-primary animate-in fade-in-0 zoom-in-95"
-                 style={{ animationDelay: `${index * 50}ms`, animationFillMode: "both" }}>
+                <Card 
+                  className="h-full transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1 hover:border-primary animate-in fade-in-0 zoom-in-95"
+                  style={{ animationDelay: `${index * 50}ms`, animationFillMode: "both" }}
+                >
                   <CardHeader className="flex flex-col items-center justify-center text-center p-6">
                     <div className="p-4 bg-muted rounded-full mb-4">
                       <Icon className="h-10 w-10 text-primary" />
