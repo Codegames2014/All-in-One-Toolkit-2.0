@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FileText, Upload, FileArchive } from "lucide-react";
+import { FileText, Upload, FileArchive, FileQuestion } from "lucide-react";
 
 export function FileViewerUI() {
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(null);
@@ -30,16 +30,11 @@ export function FileViewerUI() {
     } else if (file.type.startsWith("text/")) {
       reader.readAsText(file);
     } else if (file.type === 'application/zip' || file.name.endsWith('.zip')) {
-      // Special handling for zip files
-      setFileContent('zip'); // Use a special string to identify zip files
-      return; // No need to use FileReader
+      setFileContent('zip'); 
+      return; 
     } else {
-        toast({
-            variant: "destructive",
-            title: "Unsupported File Type",
-            description: "Cannot display this file. Only text, image, and video files are supported.",
-        });
-        return;
+      setFileContent('unsupported');
+      return;
     }
 
     reader.onload = (e) => {
@@ -61,7 +56,7 @@ export function FileViewerUI() {
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                 <Upload className="h-12 w-12 mb-4" />
                 <p>Upload a file to view its contents.</p>
-                <p className="text-sm">(Supported: images, videos, text, and .zip archives)</p>
+                <p className="text-sm">(Images, videos, text, and .zip archives supported)</p>
             </div>
         );
     }
@@ -72,6 +67,16 @@ export function FileViewerUI() {
                 <FileArchive className="h-12 w-12 mb-4" />
                 <p className="font-semibold">{fileName}</p>
                 <p className="text-sm">This is a zip archive. Viewing its contents is not supported.</p>
+            </div>
+        )
+    }
+
+    if (fileContent === 'unsupported') {
+        return (
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+                <FileQuestion className="h-12 w-12 mb-4" />
+                <p className="font-semibold">{fileName}</p>
+                <p className="text-sm">This file type is not supported for viewing.</p>
             </div>
         )
     }
