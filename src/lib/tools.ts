@@ -21,6 +21,7 @@ import {
   BookOpen,
   Barcode,
   HelpCircle,
+  Lightbulb,
 } from "lucide-react";
 
 export type Tool = {
@@ -133,6 +134,12 @@ export const tools: Tool[] = [
     description: "Ask the AI any question.",
     icon: HelpCircle,
     href: "/qa-tool",
+  },
+  {
+    name: "Question Maker",
+    description: "Generate questions from text.",
+    icon: Lightbulb,
+    href: "/question-maker",
   },
   {
     name: "App Builder",

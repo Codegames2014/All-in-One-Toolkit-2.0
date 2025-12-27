@@ -11,3 +11,4 @@ import '@/ai/flows/build-app.ts';
 import '@/ai/flows/convert-currency.ts';
 import '@/ai/flows/generate-story.ts';
 import '@/ai/flows/answer-question.ts';
+import '@/ai/flows/generate-questions.ts';
