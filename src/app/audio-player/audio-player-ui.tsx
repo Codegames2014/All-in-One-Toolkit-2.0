@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, Music } from "lucide-react";
 
-export function SoundPlayerUI() {
+export function AudioPlayerUI() {
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>("");
   const { toast } = useToast();

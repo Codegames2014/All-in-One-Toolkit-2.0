@@ -84,10 +84,10 @@ export const tools: Tool[] = [
     href: "/file-viewer",
   },
   {
-    name: "Sound Player",
+    name: "Audio Player",
     description: "Play local audio files.",
     icon: Music,
-    href: "/sound-player",
+    href: "/audio-player",
   },
   {
     name: "Basic Calculator",

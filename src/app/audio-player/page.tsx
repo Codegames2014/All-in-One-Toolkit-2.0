@@ -1,17 +1,17 @@
 import { PageHeader } from "@/components/page-header";
-import { SoundPlayerUI } from "./sound-player-ui";
+import { AudioPlayerUI } from "./audio-player-ui";
 import { Suspense } from "react";
 
-export default function SoundPlayerPage() {
+export default function AudioPlayerPage() {
   return (
     <div>
       <PageHeader
-        title="Sound Player"
+        title="Audio Player"
         description="Select a local audio file from your computer to play it."
       />
       <div className="mt-8">
         <Suspense fallback={<div>Loading...</div>}>
-          <SoundPlayerUI />
+          <AudioPlayerUI />
         </Suspense>
       </div>
     </div>
