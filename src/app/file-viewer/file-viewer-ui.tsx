@@ -56,7 +56,7 @@ export function FileViewerUI() {
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                 <Upload className="h-12 w-12 mb-4" />
                 <p>Upload a file to view its contents.</p>
-                <p className="text-sm">(Images, videos, text, and .zip archives supported)</p>
+                <p className="text-sm">(Images, GIFs, videos, text, and .zip archives supported)</p>
             </div>
         );
     }
