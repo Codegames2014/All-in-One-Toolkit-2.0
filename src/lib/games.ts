@@ -1,3 +1,4 @@
+
 import {
   type LucideIcon,
   Puzzle,
@@ -67,12 +68,6 @@ export const games: Game[] = [
     description: "Slide tiles to get to 2048.",
     icon: RectangleHorizontal,
     href: "/games/2048",
-  },
-  {
-    name: "Asteroids",
-    description: "Shoot asteroids and survive.",
-    icon: Sigma,
-    href: "/games/asteroids",
   },
   {
     name: "Space Shooter",
