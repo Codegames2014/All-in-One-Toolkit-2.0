@@ -20,6 +20,7 @@ import {
   Scale,
   BookOpen,
   Barcode,
+  HelpCircle,
 } from "lucide-react";
 
 export type Tool = {
@@ -126,6 +127,12 @@ export const tools: Tool[] = [
     description: "Solve math problems.",
     icon: BrainCircuit,
     href: "/math-solver",
+  },
+  {
+    name: "Q&A Tool",
+    description: "Ask the AI any question.",
+    icon: HelpCircle,
+    href: "/qa-tool",
   },
   {
     name: "App Builder",
