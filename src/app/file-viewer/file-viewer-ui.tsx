@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FileText, Upload } from "lucide-react";
+import { FileText, Upload, FileArchive } from "lucide-react";
 
 export function FileViewerUI() {
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(null);
@@ -29,6 +29,10 @@ export function FileViewerUI() {
       reader.readAsDataURL(file);
     } else if (file.type.startsWith("text/")) {
       reader.readAsText(file);
+    } else if (file.type === 'application/zip' || file.name.endsWith('.zip')) {
+      // Special handling for zip files
+      setFileContent('zip'); // Use a special string to identify zip files
+      return; // No need to use FileReader
     } else {
         toast({
             variant: "destructive",
@@ -57,9 +61,19 @@ export function FileViewerUI() {
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                 <Upload className="h-12 w-12 mb-4" />
                 <p>Upload a file to view its contents.</p>
-                <p className="text-sm">(Supported: images, videos, and text files)</p>
+                <p className="text-sm">(Supported: images, videos, text, and .zip archives)</p>
             </div>
         );
+    }
+
+    if (fileContent === 'zip') {
+        return (
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+                <FileArchive className="h-12 w-12 mb-4" />
+                <p className="font-semibold">{fileName}</p>
+                <p className="text-sm">This is a zip archive. Viewing its contents is not supported.</p>
+            </div>
+        )
     }
 
     if (typeof fileContent === 'string' && fileType.startsWith("image/")) {
