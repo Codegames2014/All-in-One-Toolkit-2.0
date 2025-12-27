@@ -22,6 +22,7 @@ import {
   Barcode,
   HelpCircle,
   Lightbulb,
+  FileText,
 } from "lucide-react";
 
 export type Tool = {
@@ -74,6 +75,12 @@ export const tools: Tool[] = [
     description: "Compare times across the world.",
     icon: Clock,
     href: "/time-zone-checker",
+  },
+  {
+    name: "File Viewer",
+    description: "Open and view local files.",
+    icon: FileText,
+    href: "/file-viewer",
   },
   {
     name: "Basic Calculator",
