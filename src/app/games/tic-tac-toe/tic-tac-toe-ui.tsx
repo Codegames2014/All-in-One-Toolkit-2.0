@@ -2,10 +2,16 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Award, RotateCcw, X, Circle, User, Bot } from 'lucide-react';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Award, RotateCcw, X, Circle, User, Bot, Users } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Label } from '@/components/ui/label';
 
 type Player = 'X' | 'O';
@@ -26,58 +32,82 @@ const calculateWinner = (squares: Square[]): Player | null => {
   return null;
 };
 
-const findBestMove = (squares: Square[]): number => {
-    // Basic AI:
-    // 1. Win if possible
-    // 2. Block opponent from winning
-    // 3. Take center
-    // 4. Take a corner
-    // 5. Take a side
-  
-    // Check for winning moves for 'O'
-    for (let i = 0; i < 9; i++) {
-      if (!squares[i]) {
-        const tempSquares = squares.slice();
-        tempSquares[i] = 'O';
-        if (calculateWinner(tempSquares) === 'O') {
-          return i;
+// --- AI Logic ---
+
+// Minimax algorithm for unbeatable AI
+const minimax = (newSquares: Square[], player: Player): { score: number, index?: number } => {
+    const availSpots = newSquares.map((s, i) => s === null ? i : null).filter(i => i !== null) as number[];
+
+    const winner = calculateWinner(newSquares);
+    if (winner === 'X') return { score: -10 };
+    if (winner === 'O') return { score: 10 };
+    if (availSpots.length === 0) return { score: 0 };
+
+    const moves: { index: number, score: number }[] = [];
+    for (let i = 0; i < availSpots.length; i++) {
+        const move: { index: number, score: number } = { index: availSpots[i], score: 0 };
+        newSquares[availSpots[i]] = player;
+
+        if (player === 'O') {
+            const result = minimax(newSquares, 'X');
+            move.score = result.score;
+        } else {
+            const result = minimax(newSquares, 'O');
+            move.score = result.score;
         }
-      }
+
+        newSquares[availSpots[i]] = null;
+        moves.push(move);
     }
-  
-    // Check for blocking moves for 'X'
-    for (let i = 0; i < 9; i++) {
-      if (!squares[i]) {
-        const tempSquares = squares.slice();
-        tempSquares[i] = 'X';
-        if (calculateWinner(tempSquares) === 'X') {
-          return i;
+
+    let bestMove = -1;
+    let bestScore = player === 'O' ? -10000 : 10000;
+
+    for (let i = 0; i < moves.length; i++) {
+        if (player === 'O') {
+            if (moves[i].score > bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        } else {
+            if (moves[i].score < bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
         }
-      }
     }
-  
-    // Take the center if available
-    if (!squares[4]) {
-      return 4;
-    }
-  
-    // Take a random corner
-    const corners = [0, 2, 6, 8].filter(i => !squares[i]);
-    if (corners.length > 0) {
-      return corners[Math.floor(Math.random() * corners.length)];
-    }
-  
-    // Take a random side
-    const sides = [1, 3, 5, 7].filter(i => !squares[i]);
-    if (sides.length > 0) {
-      return sides[Math.floor(Math.random() * sides.length)];
+
+    return moves[bestMove];
+}
+
+const findBestMove = (squares: Square[], difficulty: 'easy' | 'medium' | 'unbeatable'): number => {
+    const emptySquares = squares.map((s, i) => s === null ? i : null).filter(i => i !== null) as number[];
+    
+    // Difficulty logic
+    if (difficulty === 'easy' && Math.random() > 0.5) {
+        return emptySquares[Math.floor(Math.random() * emptySquares.length)];
     }
     
-    // Fallback for any remaining empty square
-    const emptySquares = squares.map((s, i) => s === null ? i : null).filter(i => i !== null) as number[];
-    return emptySquares[0];
+    if (difficulty === 'medium' && Math.random() > 0.2) {
+        // Medium AI: Prioritize winning/blocking, otherwise random
+        for (let i = 0; i < emptySquares.length; i++) {
+            const index = emptySquares[i];
+            const tempSquares = squares.slice();
+            tempSquares[index] = 'O';
+            if (calculateWinner(tempSquares) === 'O') return index;
+        }
+        for (let i = 0; i < emptySquares.length; i++) {
+            const index = emptySquares[i];
+            const tempSquares = squares.slice();
+            tempSquares[index] = 'X';
+            if (calculateWinner(tempSquares) === 'X') return index;
+        }
+        return emptySquares[Math.floor(Math.random() * emptySquares.length)];
+    }
+
+    // Unbeatable or fallback for Medium AI
+    return minimax(squares, 'O').index!;
 };
-  
 
 const SquareComponent = ({ value, onClick }: { value: Square, onClick: () => void }) => (
   <Button
@@ -97,14 +127,15 @@ export function TicTacToeUI() {
   const [winner, setWinner] = useState<Player | null>(null);
   const [isDraw, setIsDraw] = useState(false);
   const [gameMode, setGameMode] = useState<'pvp' | 'pva'>('pvp');
+  const [aiDifficulty, setAiDifficulty] = useState<'easy' | 'medium' | 'unbeatable'>('medium');
 
   const handleAIMove = useCallback((currentSquares: Square[]) => {
-      const bestMove = findBestMove(currentSquares);
+      const bestMove = findBestMove(currentSquares, aiDifficulty);
       const newSquares = currentSquares.slice();
       newSquares[bestMove] = 'O';
       setSquares(newSquares);
       setXIsNext(true);
-  }, []);
+  }, [aiDifficulty]);
 
   useEffect(() => {
     const calculatedWinner = calculateWinner(squares);
@@ -113,7 +144,6 @@ export function TicTacToeUI() {
     } else if (squares.every(Boolean)) {
       setIsDraw(true);
     } else if (gameMode === 'pva' && !xIsNext) {
-        // AI's turn
         setTimeout(() => handleAIMove(squares), 500);
     }
   }, [squares, gameMode, xIsNext, handleAIMove]);
@@ -156,18 +186,35 @@ export function TicTacToeUI() {
 
   return (
     <Card className="shadow-2xl">
-      <CardContent className="p-6 space-y-6">
-        <RadioGroup defaultValue="pvp" onValueChange={handleModeChange} className="flex justify-center gap-4">
-            <div className="flex items-center space-x-2">
-                <RadioGroupItem value="pvp" id="pvp" />
-                <Label htmlFor="pvp" className="flex items-center gap-2"><User /> Player vs Player</Label>
+      <CardHeader>
+        <CardTitle>Game Settings</CardTitle>
+        <CardDescription>Choose your opponent and difficulty.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button onClick={() => handleModeChange('pvp')} variant={gameMode === 'pvp' ? 'default' : 'outline'} className="w-full sm:w-auto">
+                <Users className="mr-2" /> Player vs Player
+            </Button>
+            <Button onClick={() => handleModeChange('pva')} variant={gameMode === 'pva' ? 'default' : 'outline'} className="w-full sm:w-auto">
+                <Bot className="mr-2" /> Player vs AI
+            </Button>
+        </div>
+        {gameMode === 'pva' && (
+            <div className="space-y-2 max-w-sm mx-auto">
+                <Label htmlFor="ai-difficulty">AI Difficulty</Label>
+                <Select value={aiDifficulty} onValueChange={(v) => setAiDifficulty(v as any)}>
+                    <SelectTrigger id="ai-difficulty">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="easy">Easy</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="unbeatable">Unbeatable</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
-            <div className="flex items-center space-x-2">
-                <RadioGroupItem value="pva" id="pva" />
-                <Label htmlFor="pva" className="flex items-center gap-2"><Bot /> Player vs AI</Label>
-            </div>
-        </RadioGroup>
-        <div className="text-xl font-semibold text-center mb-4">{status}</div>
+        )}
+        <div className="text-xl font-semibold text-center pt-4 border-t">{status}</div>
         <div className="grid grid-cols-3 gap-2">
           {squares.map((square, i) => (
             <SquareComponent key={i} value={square} onClick={() => handleClick(i)} />
