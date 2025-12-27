@@ -19,6 +19,7 @@ import {
   Clock,
   Scale,
   BookOpen,
+  Barcode,
 } from "lucide-react";
 
 export type Tool = {
@@ -47,6 +48,12 @@ export const tools: Tool[] = [
     description: "Scan QR codes with your camera.",
     icon: QrCode,
     href: "/qr-code-scanner",
+  },
+  {
+    name: "Barcode Scanner",
+    description: "Scan barcodes with your camera.",
+    icon: Barcode,
+    href: "/barcode-scanner",
   },
   {
     name: "Color Picker",
