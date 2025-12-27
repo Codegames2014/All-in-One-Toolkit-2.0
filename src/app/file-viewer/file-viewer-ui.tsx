@@ -21,10 +21,11 @@ export function FileViewerUI() {
 
     setFileName(file.name);
     setFileType(file.type);
+    setFileContent(null);
     
     const reader = new FileReader();
 
-    if (file.type.startsWith("image/")) {
+    if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
       reader.readAsDataURL(file);
     } else if (file.type.startsWith("text/")) {
       reader.readAsText(file);
@@ -32,7 +33,7 @@ export function FileViewerUI() {
         toast({
             variant: "destructive",
             title: "Unsupported File Type",
-            description: "Cannot display this file. Only text and image files are supported.",
+            description: "Cannot display this file. Only text, image, and video files are supported.",
         });
         return;
     }
@@ -56,13 +57,17 @@ export function FileViewerUI() {
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
                 <Upload className="h-12 w-12 mb-4" />
                 <p>Upload a file to view its contents.</p>
-                <p className="text-sm">(Supported: images and text files)</p>
+                <p className="text-sm">(Supported: images, videos, and text files)</p>
             </div>
         );
     }
 
     if (typeof fileContent === 'string' && fileType.startsWith("image/")) {
         return <Image src={fileContent} alt={fileName} width={800} height={600} className="max-w-full max-h-[70vh] object-contain"/>
+    }
+
+    if (typeof fileContent === 'string' && fileType.startsWith("video/")) {
+        return <video src={fileContent} controls className="max-w-full max-h-[70vh] rounded-md"/>
     }
 
     return (
@@ -92,7 +97,7 @@ export function FileViewerUI() {
           </CardTitle>
           {fileType && <CardDescription>{fileType}</CardDescription>}
         </CardHeader>
-        <CardContent className="h-[400px]">
+        <CardContent className="h-[400px] flex items-center justify-center">
             {renderContent()}
         </CardContent>
       </Card>
