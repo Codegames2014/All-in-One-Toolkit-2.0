@@ -44,17 +44,15 @@ export default function Home() {
   return (
     <div>
       <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <PageHeader
-          title="All-in-One Toolkit"
-          description="Your one-stop destination for a variety of useful tools."
-        />
-
-        <div className="mt-8 mb-8 flex justify-center">
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <div className="flex justify-between items-center">
+          <PageHeader
+            title="All-in-One Toolkit"
+            description="Your one-stop destination for a variety of useful tools."
+          />
+           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="w-full max-w-lg">
-                <Search className="mr-2 h-4 w-4" />
-                Search for a tool or game...
+              <Button variant="ghost" size="icon">
+                <Search />
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -91,7 +89,8 @@ export default function Home() {
             </DialogContent>
           </Dialog>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
           {allToolsForDisplay.map((tool, index) => {
             const Icon = tool.icon;
             return (
