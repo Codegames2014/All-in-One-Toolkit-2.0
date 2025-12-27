@@ -88,13 +88,24 @@ export function FileViewerUI() {
     if (typeof fileContent === 'string' && fileType.startsWith("video/")) {
         return <video src={fileContent} controls className="max-w-full max-h-[70vh] rounded-md"/>
     }
+    
+    if (typeof fileContent === 'string') {
+        return (
+            <ScrollArea className="h-full">
+                <pre className="text-sm p-4 whitespace-pre-wrap break-words">
+                    {fileContent}
+                </pre>
+            </ScrollArea>
+        )
+    }
 
+    // Fallback for ArrayBuffer or other non-string types
     return (
-        <ScrollArea className="h-full">
-            <pre className="text-sm p-4 whitespace-pre-wrap break-words">
-                {fileContent}
-            </pre>
-        </ScrollArea>
+        <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+            <FileQuestion className="h-12 w-12 mb-4" />
+            <p className="font-semibold">{fileName}</p>
+            <p className="text-sm">This file type cannot be displayed as text.</p>
+        </div>
     )
   }
 
