@@ -13,10 +13,10 @@ export function LoadingScreen() {
     // Simulate loading progress
     const timer1 = setTimeout(() => setProgress(30), 100);
     const timer2 = setTimeout(() => setProgress(75), 500);
-    const timer3 = setTimeout(() => setProgress(100), 1200);
+    const timer3 = setTimeout(() => setProgress(100), 1500);
     
     // Hide the loading screen after animation
-    const timer4 = setTimeout(() => setVisible(false), 2000);
+    const timer4 = setTimeout(() => setVisible(false), 3000);
 
     return () => {
         clearTimeout(timer1);
