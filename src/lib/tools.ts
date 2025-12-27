@@ -23,6 +23,7 @@ import {
   HelpCircle,
   Lightbulb,
   FileText,
+  Music,
 } from "lucide-react";
 
 export type Tool = {
@@ -81,6 +82,12 @@ export const tools: Tool[] = [
     description: "Open and view local files.",
     icon: FileText,
     href: "/file-viewer",
+  },
+  {
+    name: "Sound Player",
+    description: "Play local audio files.",
+    icon: Music,
+    href: "/sound-player",
   },
   {
     name: "Basic Calculator",
